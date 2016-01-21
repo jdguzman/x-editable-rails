@@ -26,14 +26,15 @@ module X
 
           url     = options.delete(:url){ polymorphic_path(object) }
           object  = object.last if object.kind_of?(Array)
+          p_obj   = options.delete(:p_obj){ object }
           value   = options.delete(:value){ object.send(method) }
           source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
           html_options = options.delete(:html){ Hash.new }
 
-          if xeditable?(object)
-            model   = object.class.model_name.param_key
+          if xeditable?(p_obj)
+            model   = p_obj.class.model_name.param_key
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
             title   = options.delete(:title) do
@@ -54,7 +55,7 @@ module X
               type:   type,
               model:  model,
               name:   method,
-              value:  ( type == 'wysihtml5' ? Base64.encode64(output_value) : output_value ), 
+              value:  ( type == 'wysihtml5' ? Base64.encode64(output_value) : output_value ),
               placeholder: placeholder,
               classes: classes,
               source: source,
