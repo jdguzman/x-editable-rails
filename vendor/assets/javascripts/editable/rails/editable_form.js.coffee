@@ -23,7 +23,7 @@ unless EditableForm
         if nestedName
           nested          = {}
           nested[myName]  = myValue
-          nested['id']    = nestedId
+          nested['id']    = nestedId[0]
 
           if nestedLocale
             nested['locale'] = nestedLocale
@@ -35,6 +35,7 @@ unless EditableForm
           else
             if nestedParts.length > 1
               obj[nestedParts[0] + '_attributes[]' + nestedParts[1] + '_attributes[]'] = nested
+              obj[nestedParts[0] + '_attributes[]'] = { 'id': nestedId[1] }
             else
               obj[nestedName + '_attributes[]'] = nested
         else
