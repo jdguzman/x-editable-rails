@@ -28,10 +28,15 @@ unless EditableForm
           if nestedLocale
             nested['locale'] = nestedLocale
 
-          if originalUrl.indexOf(nestedName) > -1
+          nestedParts = nestedName.split('.')
+
+          if originalUrl.indexOf(nestedParts[0]) > -1
             obj[nestedName + '_attributes'] = nested
           else
-            obj[nestedName + '_attributes[]'] = nested
+            if nestedParts.length > 1
+              obj[nestedParts[0] + '_attributes[]' + nestedParts[1] + '_attributes[]'] = nested
+            else
+              obj[nestedName + '_attributes[]'] = nested
         else
           obj[myName] = myValue
 
