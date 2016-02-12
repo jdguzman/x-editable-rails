@@ -23,7 +23,7 @@ unless EditableForm
         if nestedName
           nested          = {}
           nested[myName]  = myValue
-          nested['id']    = nestedId[0]
+          nested['id']    = if Array.isArray(nestedId) then nestedId[0] else nestedId
 
           if nestedLocale
             nested['locale'] = nestedLocale
@@ -31,13 +31,13 @@ unless EditableForm
           nestedParts = nestedName.split('.')
 
           if originalUrl.indexOf(nestedParts[0]) > -1
-            obj[nestedName + '_attributes'] = nested
+            obj[nestedParts[0] + '_attributes'] = nested
           else
             if nestedParts.length > 1
               obj[nestedParts[0] + '_attributes[]' + nestedParts[1] + '_attributes[]'] = nested
               obj[nestedParts[0] + '_attributes[]'] = { 'id': nestedId[1] }
             else
-              obj[nestedName + '_attributes[]'] = nested
+              obj[nestedParts[0] + '_attributes[]'] = nested
         else
           obj[myName] = myValue
 
